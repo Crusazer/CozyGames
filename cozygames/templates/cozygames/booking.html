@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: booking{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="col-12">
+        <div class="row">
+            <h1 align="center">Booking your table</h1>
+        </div>
+        <div class="row-1 d-flex justify-content-center">
+            <form action="{% url 'cozygames:booking' %}" method="post" class="d-flex align-items-center">
+                {% csrf_token %}
+                <div style="margin-top: 20px;">
+                    {{ form.as_p }}
+                </div>
+                <div style="margin-top: 0px; margin-left: 10px;">
+                    <input type="submit" class="btn btn-primary" value="OK"/>
+                </div>
+            </form>
+        </div>
+        <div class="row-1 d-flex justify-content-center">
+            <a href="#">Cancel reservation</a>
+        </div>
+        {% if tables %}
+        <div class="row-1 d-flex justify-content-center">
+            <h3>Available tables</h3>
+        </div>
+        <div class="row-1 d-flex justify-content-center">
+            <div style="display: flex; flex-wrap: wrap;">
+                {% for table in tables %}
+                <div class="card m-2 bg-warning" style="width: 18rem;">
+                    <div class="card-body" style="background-color: #ffe1be;">
+                        <h5 class="card-title">Table {{ table.number }}</h5>
+                        <p class="card-text">
+                            Type of table: {{ table.get_type_display }}<br>
+                        </p>
+                        <a href="{% url 'cozygames:booking_detail' table.number" class="btn btn-primary" style="background-color: #41B3A3;">Booking
+                            table</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="row-1 d-flex justify-content-center">
+                <h3>No tables available</h3>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

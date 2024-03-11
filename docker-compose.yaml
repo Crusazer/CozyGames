@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db_cozygames
+      - cache_cozygames
+    volumes:
+      - .:/CozyGames
+    networks:
+      - cozygames_net
+
+  db_cozygames:
+    image: postgres
+    environment:
+      - POSTGRES_DB=django
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/
+    networks:
+      - cozygames_net
+
+  cache_cozygames:
+    image: redis
+    networks:
+      - cozygames_net
+
+networks:
+  cozygames_net:
+
+volumes:
+  pgdata:
