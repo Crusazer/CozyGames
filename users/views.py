@@ -25,7 +25,7 @@ class RegisterUser(CreateView):
             return HttpResponseRedirect(next_url)
         return response
 
+
 class LoginUser(LoginView):
     form_class = LoginUserForm
     template_name = 'users/login.html'
-

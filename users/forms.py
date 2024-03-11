@@ -36,8 +36,10 @@ class CreateUserForm(UserCreationForm):
         }
 
     def clean_email(self):
-        """ Duplicate email verification """
+        """ Duplicate email verification or field is empty"""
         email = self.cleaned_data['email']
+        if not email:
+            raise forms.ValidationError("This field is required.")
         if get_user_model().objects.filter(email=email).exists():
             raise forms.ValidationError("Email already exists")
         return email
