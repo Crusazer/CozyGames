@@ -23,9 +23,10 @@ class Table(models.Model):
 
 
 class Reservation(models.Model):
-    user: User = models.ForeignKey(User, related_name='reservation', on_delete=models.CASCADE)
+    user: User = models.ForeignKey(User, related_name='reservations', on_delete=models.CASCADE)
     table: Table = models.ForeignKey(Table, related_name='reservation', on_delete=models.CASCADE)
     date = models.DateField(blank=False)
+    objects: QuerySet
 
     def __str__(self):
         return f"Reservation of table #{self.table.number} on {self.date}"

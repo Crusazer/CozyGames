@@ -2,12 +2,15 @@ from django import forms
 from django.contrib.auth import get_user_model, password_validation
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
 from django.contrib.auth.models import User
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+from users.models import Profile
 
 
 class ReceiverForm(forms.ModelForm):
-    phone_number = forms.RegexField(regex=r'^\+?1?\d{9,15}$', error_messages={
-        'invalid': "Phone number must be between 9 and 15 digits.", })
+    phone_number = forms.RegexField(regex=r'^\+375(24|25|29|33|44)\d{7}$', error_messages={
+        'invalid': "Phone number should start with +375 and consist of 13 digits. For exemple +375291231212 ", })
 
 
 class CreateUserForm(UserCreationForm):
@@ -56,3 +59,35 @@ class LoginUserForm(AuthenticationForm):
     class Meta:
         model = get_user_model()
         fields = ['username', 'password']
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'email', 'first_name', 'last_name']
+        labels = {
+            'first_name': "First name",
+            'last_name': "Last name",
+            'username': "Username",
+            'email': "Email"
+        }
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-input'}),
+            'username': forms.TextInput(attrs={'class': 'form-input'}),
+            'email': forms.EmailInput(attrs={'class': 'form-input'})
+        }
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['birthday', 'phone_number']
+        labels = {
+            'birthday': "Birthday",
+            'phone_number': "Phone Number"
+        }
+        widgets = {
+            'birthday': forms.DateInput(attrs={'class': 'form-input', 'type': 'date', 'max': timezone.now().date()}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-input'})
+        }

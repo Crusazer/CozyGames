@@ -26,6 +26,9 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'cozygames:index' %}">Home</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'users:profile' %}">Profile</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'cozygames:booking' %}">Booking</a>
                 </li>
                 <li class="nav-item">
@@ -49,6 +52,19 @@
         </div>
     </div>
 </nav>
+
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} d-flex align-items-center" role="alert">
+    <div class="container">
+        <div class="row-1 d-flex justify-content-center">
+            {{ message }}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 {% block body %}
 {% endblock %}
 </body>

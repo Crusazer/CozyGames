@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Profile{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="col-12">
+        <div class="row">
+            <h1 class="text-center">Your profile, {{ user.username }}</h1>
+        </div>
+        <div class="row justify-content-center">
+            <a class="link-offset-2 link-underline link-underline-opacity-0 text-center" href="#">Cancel reservation</a>
+        </div>
+        <div class="row justify-content-center">
+            <a class="link-offset-2 link-underline link-underline-opacity-0 text-center" href="#">Booking history</a>
+        </div>
+        <div class="row-1 d-flex justify-content-center">
+            <div style="display: flex; flex-wrap: wrap;">
+                <div class="card m-2 bg-warning">
+                    <div class="card-body" style="background-color: #ffe1be;">
+                        <h5 class="card-title">Change your personal data</h5>
+                        <form action="{% url 'users:profile' %}" method="POST">
+                            {% csrf_token %}
+                            {% for field in user_form %}
+                            <div class="mb-3 d-block">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <br>
+                                {{ field }}
+                                <div style="color: #e11e1e">{{ field.errors }}</div>
+                            </div>
+                            {% endfor %}
+                            {% for field in form %}
+                            <div class="mb-3 d-block">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                <br>
+                                {{ field }}
+                                <div style="color: #e11e1e">{{ field.errors }}</div>
+                            </div>
+                            {% endfor %}
+                            <input type="submit" value="Change" class="btn btn-outline-primary w-100"
+                                   data-toggle="modal" data-target="#profileModal"
+                                   style="background-color: #41B3A3; color: black;"
+                                   onmouseover="this.style.color='white'"
+                                   onmouseout="this.style.color='black'">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
