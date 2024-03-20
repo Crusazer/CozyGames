@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Booking history{% endblock %}
+{% block body %}
+<style>
+    .page-link {
+        background-color: #ffe1be;
+        border-color: #dee2e6;
+        color: #000;
+    }
+</style>
+<div class="container">
+    <div class="col-12">
+        <div class="row">
+            <h1 align="center">Your active bookings</h1>
+        </div>
+        <!-- Tiles of reservations -->
+        <div class="row-1 d-flex justify-content-center">
+            <div style="display: flex; flex-wrap: wrap;">
+                {% if reservations %}
+                {% for reservation in reservations %}
+                <div class="card m-2 bg-warning" style="width: 18rem;">
+                    <div class="card-body" style="background-color: #ffe1be;">
+                        <h5 class="card-title">Table {{ reservation.table.number }}</h5>
+                        <p class="card-text">
+                            Type of table: {{ reservation.table.get_type_display }}<br>
+                        </p>
+                        <p class="card-text">Date: {{ reservation.date }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+        <!-- Pagination buttons -->
+            <div class="mt-4">
+                {% if is_paginated %}
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item"><span class="page-link" style="background-color: #41B3A3; color: #fff;">{{ num }}</span></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+                    {% endif %}
+                </ul>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="row-1 d-flex justify-content-center">
+                <h3>You don't have bookings yet.</h3>
+            </div>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}
