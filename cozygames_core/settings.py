@@ -135,3 +135,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = 'users:login'
+
+# CELERY configurations
+CELERY_BROKER_URL = 'redis://cache_cozygames:6379/0'
+CELERY_RESULT_BACKEND = 'redis://cache_cozygames:6379/0'
+CELERY_IMPORTS = ('cozygames.tasks',)
+

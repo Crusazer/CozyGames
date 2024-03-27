@@ -14,6 +14,10 @@ from django.utils import timezone
 from cozygames.forms import BookingDateForm
 from cozygames.models import Table, Reservation
 
+# need for celery scanning
+from . import tasks
+from . import schedule_tasks
+
 
 # Create your views here.
 class IndexView(generic.TemplateView):
@@ -89,6 +93,7 @@ class CancelReservation(LoginRequiredMixin, generic.list.MultipleObjectMixin, ge
             'table')
 
     def get(self, request: HttpRequest, *args, **kwargs):
+        test_task.delay()
         return render(request, self.template_name, self.get_context_data(object_list=self.get_queryset()))
 
     def post(self, request: HttpRequest, *args, **kwargs):

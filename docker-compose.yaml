@@ -13,6 +13,32 @@ services:
     networks:
       - cozygames_net
 
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/CozyGames
+    depends_on:
+      - db_cozygames
+      - cache_cozygames
+    command: celery -A cozygames_core worker --loglevel=info
+    networks:
+      - cozygames_net
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/CozyGames
+    depends_on:
+      - db_cozygames
+      - cache_cozygames
+    command: celery -A cozygames_core beat --loglevel=info
+    networks:
+      - cozygames_net
+
   db_cozygames:
     image: postgres
     environment:
