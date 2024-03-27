@@ -93,7 +93,6 @@ class CancelReservation(LoginRequiredMixin, generic.list.MultipleObjectMixin, ge
             'table')
 
     def get(self, request: HttpRequest, *args, **kwargs):
-        test_task.delay()
         return render(request, self.template_name, self.get_context_data(object_list=self.get_queryset()))
 
     def post(self, request: HttpRequest, *args, **kwargs):
