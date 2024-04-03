@@ -1,9 +1,11 @@
 from datetime import datetime
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError
 from django.db.models import Q
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
@@ -11,8 +13,8 @@ from django.views import generic, View
 from django.views.decorators.cache import cache_page
 from django.utils import timezone
 
-from cozygames.forms import BookingDateForm
-from cozygames.models import Table, Reservation
+from cozygames.forms import BookingDateForm, VotingForm
+from cozygames.models import Table, Reservation, Vote, Voting, CardGame
 
 # need for celery scanning
 from . import tasks
@@ -102,7 +104,7 @@ class CancelReservation(LoginRequiredMixin, generic.list.MultipleObjectMixin, ge
             reservation.delete()
             messages.success(request, f"Your booking of {reservation_date} has been successfully canceled.")
         else:
-            messages.error(request, "Booking not found.")
+            messages.warning(request, "Booking not found.")
         return redirect(self.success_url)
 
 
@@ -114,3 +116,37 @@ class BookingHistoryView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return self.request.user.reservations.filter(date__lte=timezone.now().date()).order_by('-date')
+
+
+class VotingView(generic.View):
+    template_name = 'cozygames/voting.html'
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        left_votes = 0
+        if self.request.user.is_authenticated:
+            left_votes = 3 - Vote.objects.filter(user=self.request.user, date=timezone.now().date()).count()
+
+        context = {
+            'form': VotingForm(),
+            'left_votes': left_votes
+        }
+        return render(request, self.template_name, context)
+
+    @method_decorator(login_required)
+    def post(self, request: HttpRequest, *args, **kwargs):
+        schedule_tasks.update_voting.delay()
+        form = VotingForm(request.POST)
+        if form.is_valid():
+            today_date = timezone.now().date()
+            voting = get_object_or_404(Voting, date=today_date)
+            card_game = get_object_or_404(CardGame, pk=form.cleaned_data['game'])
+            if Vote.objects.filter(user=self.request.user, date=today_date).count() >= 3:
+                messages.warning(request, "You cannot vote more than 3 times.")
+            else:
+                try:
+                    Vote.objects.create(user=request.user, card_game=card_game, voting=voting)
+                    messages.success(request, "Your vote has been recorded successfully.")
+                except IntegrityError:
+                    messages.warning(request, "You have already voted for this game.")
+
+        return redirect(reverse_lazy('cozygames:voting'))

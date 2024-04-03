@@ -1,6 +1,9 @@
 from __future__ import absolute_import, unicode_literals
 import os
 from celery import Celery
+from celery.schedules import crontab
+
+import cozygames.schedule_tasks
 from . import settings
 
 CELERY_TIMEZONE = 'Europe/Minsk'
@@ -17,5 +20,9 @@ app.conf.beat_schedule = {
         'task': 'cozygames.schedule_tasks.daily_task_test',
         'schedule': 10,
     },
+    'update_voting_task': {
+        'task': 'cozygames.schedule_tasks.update_voting',
+        'schedule': crontab(hour=21, minute=0)
+    }
     # Other schedule tasks add here
 }

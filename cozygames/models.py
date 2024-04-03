@@ -30,3 +30,43 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"Reservation of table #{self.table.number} on {self.date}"
+
+
+class CardGame(models.Model):
+    name = models.CharField(max_length=100, null=False)
+    min_number_player = models.PositiveIntegerField(null=False, blank=False)
+    max_number_player = models.PositiveIntegerField(null=False, blank=False)
+    description = models.TextField(null=True, blank=True, default='No description.')
+    objects: QuerySet
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Voting(models.Model):
+    date = models.DateField(null=False, unique_for_date=True, auto_now=False, auto_now_add=True)
+    result = models.ForeignKey(CardGame, related_name='votings', blank=True, null=True, default=None,
+                               on_delete=models.SET_NULL)
+    objects: QuerySet
+
+    def __str__(self):
+        return f"Voting of {self.date}"
+
+
+class Vote(models.Model):
+    user = models.ForeignKey(User, related_name='votes', null=True, blank=False, on_delete=models.SET_NULL)
+    card_game = models.ForeignKey(CardGame, related_name='votes', null=False, blank=False, on_delete=models.CASCADE)
+    voting = models.ForeignKey(Voting, related_name='votes', blank=False, null=False, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    objects: QuerySet
+
+    def __str__(self):
+        return f"Vote of {self.user} for {self.card_game.name} on {self.date}"
+
+    class Meta:
+        unique_together = ('user', 'date', 'card_game')
+
+    @classmethod
+    def user_can_vote(cls, user: User, date) -> bool:
+        """Checks if the user can vote on the given date."""
+        return cls.objects.filter(user=user, date=date).count() < 3
