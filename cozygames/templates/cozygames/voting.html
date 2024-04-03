@@ -15,14 +15,15 @@
                 You have votes left today: {{ left_votes }}
             </div>
             <div class="row-1 d-flex justify-content-center">
-                <form action="{% url 'cozygames:voting' %}" method="POST">
+                <form id="votingForm" action="{% url 'cozygames:voting' %}" method="POST">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="submit" class="btn btn-outline-primary w-100" value="Vote"
-                           data-toggle="modal" data-target="#profileModal"
-                           style="background-color: #41B3A3; color: black;"
-                           onmouseover="this.style.color='white'"
-                           onmouseout="this.style.color='black'">
+                    <div class="btn-group w-100" role="group" aria-label="Voting">
+                        <button type="submit" class="btn btn-outline-primary w-50 mr-1">Vote</button>
+                        <button type="button" class="btn btn-outline-info w-50 ml-1" id="infoBtn" data-toggle="modal"
+                                data-target="#gameInfoModal">Info
+                        </button>
+                    </div>
                 </form>
             </div>
             {% else %}
@@ -33,5 +34,22 @@
         </div>
     </div>
 </div>
+<div id="gameInfo"></div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $(document).on('click', '#infoBtn', function() {
+        var gameId = $('#id_game').val();
+        $.ajax({
+            url: '/booking/card_game_info/' + gameId + '/',
+            type: 'GET',
+            success: function(response) {
+                $('#gameInfo').html(response);
+            }
+        });
+    });
+});
+
+</script>
 {% endblock %}

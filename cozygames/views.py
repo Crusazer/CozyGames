@@ -150,3 +150,14 @@ class VotingView(generic.View):
                     messages.warning(request, "You have already voted for this game.")
 
         return redirect(reverse_lazy('cozygames:voting'))
+
+
+class CardGameInfoView(View):
+    def get(self, request, game_id):
+        print("\033[33mINFO:\033[0m FROM GET_INFO_GAME")
+        game = get_object_or_404(CardGame, pk=game_id)
+        return render(request, 'cozygames/card_game_info.html', {'game': game})
+
+    def post(self, request, game_id):
+        print("\033[33mINFO:\033[0m FROM GET_INFO_GAME POOOST")
+        return HttpResponseBadRequest("Invalid request")

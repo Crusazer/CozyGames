@@ -17,6 +17,6 @@ class BookingDateForm(forms.Form):
 
 
 class VotingForm(forms.Form):
-    """Voting for to vote from game"""
-    game_choices = CardGame.objects.all().values_list('id', 'name')
+    """Form for voting for a game."""
+    game_choices = [(game.id, game.name) for game in CardGame.objects.all()]
     game = forms.ChoiceField(choices=game_choices, label='Select a game')
