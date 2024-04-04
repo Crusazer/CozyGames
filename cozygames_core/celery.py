@@ -16,10 +16,6 @@ app.autodiscover_tasks(settings.INSTALLED_APPS)
 
 # Schedule tasks
 app.conf.beat_schedule = {
-    # 'daily-task1': {
-    #     'task': 'cozygames.schedule_tasks.daily_task_test',
-    #     'schedule': 10,
-    # },
     'update_voting_task': {
         'task': 'cozygames.schedule_tasks.update_voting',
         'schedule': crontab(hour=21, minute=0)

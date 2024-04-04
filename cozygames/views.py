@@ -16,10 +16,6 @@ from django.utils import timezone
 from cozygames.forms import BookingDateForm, VotingForm
 from cozygames.models import Table, Reservation, Vote, Voting, CardGame
 
-# need for celery scanning
-from . import tasks
-from . import schedule_tasks
-
 
 # Create your views here.
 class IndexView(generic.TemplateView):
@@ -134,7 +130,7 @@ class VotingView(generic.View):
 
     @method_decorator(login_required)
     def post(self, request: HttpRequest, *args, **kwargs):
-        schedule_tasks.update_voting.delay()
+        # schedule_tasks.update_voting.delay()
         form = VotingForm(request.POST)
         if form.is_valid():
             today_date = timezone.now().date()
@@ -154,10 +150,8 @@ class VotingView(generic.View):
 
 class CardGameInfoView(View):
     def get(self, request, game_id):
-        print("\033[33mINFO:\033[0m FROM GET_INFO_GAME")
         game = get_object_or_404(CardGame, pk=game_id)
         return render(request, 'cozygames/card_game_info.html', {'game': game})
 
     def post(self, request, game_id):
-        print("\033[33mINFO:\033[0m FROM GET_INFO_GAME POOOST")
         return HttpResponseBadRequest("Invalid request")

@@ -21,4 +21,4 @@ RUN pip install celery
 EXPOSE 8000
 
 #CMD ["sleep", "3" && "python3", "manage.py", "migrate" && "python3", "manage.py", "runserver", "0.0.0.0:8000" ]
-CMD ["sh", "-c", "sleep 3 && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000 & celery -A cozygames_core worker --loglevel=info"]
+CMD ["sh", "-c", "sleep 3 && python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000 & celery -A cozygames_core worker --loglevel=info"]

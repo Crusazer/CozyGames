@@ -1,15 +1,8 @@
 import random
 
 from celery import shared_task
-from django.db import IntegrityError
-from django.db.models import Count, Max, F
+from django.db.models import Count
 from django.utils import timezone
-
-
-@shared_task()
-def daily_task_test():
-    print(f"\033[33mINFO:\033[0m SCHEDULE TASK FROM CELERY {timezone.now()}")
-    return "\033[33mINFO:\033[0m RETURN SCHEDULE TASK FROM CELERY"
 
 
 @shared_task()
@@ -18,7 +11,7 @@ def update_voting():
 
     voting: Voting = Voting.objects.filter(date=timezone.now().date()).first()
     if not voting:
-        print(f"\033[91mERROR:\033[0m Voting doesn't exist")
+        print(f"\033[33mINFO:\033[0m Voting doesn't exist")
     else:
         votes = voting.votes.all()
 
@@ -36,6 +29,6 @@ def update_voting():
 
     current_voting = Voting.objects.filter(date=timezone.now().date()).first()
     if current_voting:
-        print(f"\033[91mERROR:\033[0m Today voting is exists")
+        print(f"\033[33mINFO:\033[0m Today voting is exists")
     else:
         Voting.objects.create()

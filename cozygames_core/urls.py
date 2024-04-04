@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('cozygames.urls')),
     path('users/', include('users.urls', namespace='user')),
+    path('forum/', include('forum.urls', namespace='forum'))
 ]
