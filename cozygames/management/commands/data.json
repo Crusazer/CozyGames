@@ -27,45 +27,150 @@
     }
   ],
   "tables": [
-    {"number": 1, "type": "BG"},
-    {"number": 2, "type": "CG"},
-    {"number": 3, "type": "BG"},
-    {"number": 4, "type": "CG"},
-    {"number": 5, "type": "BG"}
+    {
+      "number": 1,
+      "type": "BG"
+    },
+    {
+      "number": 2,
+      "type": "BG"
+    },
+    {
+      "number": 3,
+      "type": "BG"
+    },
+    {
+      "number": 4,
+      "type": "CG"
+    },
+    {
+      "number": 5,
+      "type": "CG"
+    }
   ],
   "card_games": [
-    {"name": "Game 1", "min_number_player": 2, "max_number_player": 4, "description": "Description about game 1"},
-    {"name": "Game 2", "min_number_player": 3, "max_number_player": 6, "description": "Description about game 2"},
-    {"name": "Game 3", "min_number_player": 4, "max_number_player": 8, "description": "Description about game 3"},
-    {"name": "Game 4", "min_number_player": 2, "max_number_player": 5, "description": "Description about game 4"},
-    {"name": "Game 5", "min_number_player": 3, "max_number_player": 7, "description": "Description about game 5"}
+    {
+      "name": "Uno",
+      "min_number_player": 2,
+      "max_number_player": 10,
+      "description": "Uno is a classic card game that is easy to learn and fun to play for players of all ages. The objective of the game is to be the first player to get rid of all your cards by matching them in color or number to the top card of the discard pile."
+    },
+    {
+      "name": "Exploding Kittens",
+      "min_number_player": 2,
+      "max_number_player": 5,
+      "description": "Exploding Kittens is a highly strategic, kitty-powered version of Russian Roulette. Players draw cards from the deck until someone draws an Exploding Kitten, at which point they explode, they are dead, and they are out of the game."
+    },
+    {
+      "name": "Cards Against Humanity",
+      "min_number_player": 4,
+      "max_number_player": 20,
+      "description": "Cards Against Humanity is a party game for horrible people. Unlike most of the party games you've played before, Cards Against Humanity is as despicable and awkward as you and your friends."
+    },
+    {
+      "name": "The Resistance",
+      "min_number_player": 5,
+      "max_number_player": 10,
+      "description": "The Resistance is a social deduction game where players take on the roles of Resistance Operatives or Imperial Spies. The Resistance must complete missions to thwart the plans of the Empire, while the Spies must sabotage the Resistance's efforts."
+    },
+    {
+      "name": "Sushi Go!",
+      "min_number_player": 2,
+      "max_number_player": 5,
+      "description": "Sushi Go! is a fast-paced card game where players draft sushi dishes to create the most delicious meal possible. The game features adorable artwork and simple gameplay that is enjoyable for players of all skill levels."
+    }
   ],
   "votings": [
-    {"date": "2024-04-01", "result_id": 1},
-    {"date": "2024-04-02", "result_id": 2},
-    {"date": "2024-04-03", "result_id": 3},
-    {"date": "2024-04-04", "result_id": 4},
-    {"date": "2024-04-05", "result_id": 5}
+    {
+      "date": "2024-04-01",
+      "result_id": 1
+    },
+    {
+      "date": "2024-04-02",
+      "result_id": 2
+    },
+    {
+      "date": "2024-04-03",
+      "result_id": 3
+    },
+    {
+      "date": "2024-04-04",
+      "result_id": 4
+    },
+    {
+      "date": "2024-04-05",
+      "result_id": 5
+    }
   ],
   "themes": [
-    {"name": "Theme 1", "date_created": "2024-04-01"},
-    {"name": "Theme 2", "date_created": "2024-04-02"},
-    {"name": "Theme 3", "date_created": "2024-04-03"},
-    {"name": "Theme 4", "date_created": "2024-04-04"},
-    {"name": "Theme 5", "date_created": "2024-04-05"}
+    {
+      "name": "Theme 1",
+      "date_created": "2024-04-01"
+    },
+    {
+      "name": "Theme 2",
+      "date_created": "2024-04-02"
+    },
+    {
+      "name": "Theme 3",
+      "date_created": "2024-04-03"
+    },
+    {
+      "name": "Theme 4",
+      "date_created": "2024-04-04"
+    },
+    {
+      "name": "Theme 5",
+      "date_created": "2024-04-05"
+    }
   ],
   "questions": [
-    {"name": "Question 1", "date_created": "2024-04-01", "date_update": "2024-04-01"},
-    {"name": "Question 2", "date_created": "2024-04-02", "date_update": "2024-04-02"},
-    {"name": "Question 3", "date_created": "2024-04-03", "date_update": "2024-04-03"},
-    {"name": "Question 4", "date_created": "2024-04-04", "date_update": "2024-04-04"},
-    {"name": "Question 5", "date_created": "2024-04-05", "date_update": "2024-04-05"}
+    {
+      "name": "Question 1",
+      "date_created": "2024-04-01",
+      "date_update": "2024-04-01"
+    },
+    {
+      "name": "Question 2",
+      "date_created": "2024-04-02",
+      "date_update": "2024-04-02"
+    },
+    {
+      "name": "Question 3",
+      "date_created": "2024-04-03",
+      "date_update": "2024-04-03"
+    },
+    {
+      "name": "Question 4",
+      "date_created": "2024-04-04",
+      "date_update": "2024-04-04"
+    },
+    {
+      "name": "Question 5",
+      "date_created": "2024-04-05",
+      "date_update": "2024-04-05"
+    }
   ],
   "messages": [
-    {"text": "Message 1", "date": "2024-04-01"},
-    {"text": "Message 2", "date": "2024-04-02"},
-    {"text": "Message 3", "date": "2024-04-03"},
-    {"text": "Message 4", "date": "2024-04-04"},
-    {"text": "Message 5", "date": "2024-04-05"}
+    {
+      "text": "Message 1",
+      "date": "2024-04-01"
+    },
+    {
+      "text": "Message 2",
+      "date": "2024-04-02"
+    },
+    {
+      "text": "Message 3",
+      "date": "2024-04-03"
+    },
+    {
+      "text": "Message 4",
+      "date": "2024-04-04"
+    },
+    {
+      "text": "Message 5",
+      "date": "2024-04-05"
+    }
   ]
 }

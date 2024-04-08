@@ -118,7 +118,7 @@ else:
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
@@ -142,4 +142,3 @@ LOGIN_URL = 'users:login'
 CELERY_BROKER_URL = 'redis://cache_cozygames:6379/0'
 CELERY_RESULT_BACKEND = 'redis://cache_cozygames:6379/0'
 CELERY_IMPORTS = ('cozygames.tasks',)
-

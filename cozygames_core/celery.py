@@ -7,10 +7,12 @@ import cozygames.schedule_tasks
 from . import settings
 
 CELERY_TIMEZONE = 'Europe/Minsk'
+USE_TZ = True
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cozygames_core.settings')
 
 app = Celery('cozygames_core')
+app.conf.timezone = CELERY_TIMEZONE
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(settings.INSTALLED_APPS)
 
@@ -18,7 +20,7 @@ app.autodiscover_tasks(settings.INSTALLED_APPS)
 app.conf.beat_schedule = {
     'update_voting_task': {
         'task': 'cozygames.schedule_tasks.update_voting',
-        'schedule': crontab(hour=21, minute=0)
+        'schedule': crontab(hour=0, minute=0)
     }
     # Other schedule tasks add here
 }

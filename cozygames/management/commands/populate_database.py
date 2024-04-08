@@ -40,7 +40,8 @@ class Command(BaseCommand):
             for card_game_data in card_game_datas:
                 CardGame.objects.create(name=card_game_data['name'],
                                         min_number_player=card_game_data['min_number_player'],
-                                        max_number_player=card_game_data['max_number_player'])
+                                        max_number_player=card_game_data['max_number_player'],
+                                        description=card_game_data['description'])
 
             # Load data for model Voting
             for voting_data, card_game_data in zip(voting_datas, card_game_datas):

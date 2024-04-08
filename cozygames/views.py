@@ -135,7 +135,8 @@ class VotingView(generic.View):
         if form.is_valid():
             today_date = timezone.now().date()
             voting = get_object_or_404(Voting, date=today_date)
-            card_game = get_object_or_404(CardGame, pk=form.cleaned_data['game'])
+            card_game = get_object_or_404(CardGame, pk=form.cleaned_data['game'].id)
+
             if Vote.objects.filter(user=self.request.user, date=today_date).count() >= 3:
                 messages.warning(request, "You cannot vote more than 3 times.")
             else:

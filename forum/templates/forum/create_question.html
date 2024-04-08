@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Create question{% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card bg-warning">
+                <div class="card-body" style="background-color: #ffe1be;">
+                    <h5 class="card-title text-center">Create question</h5>
+                    <form action="{% url 'forum:create_question' %}" method="POST">
+                        {% csrf_token %}
+                        {% for field in form.visible_fields %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            <br>
+                            {% if field.label == "Select theme" %}
+                            <div class="input-group">
+                                {{ field }}
+                            </div>
+                            {% else %}
+                            {{ field }}
+                            {% endif %}
+                            <div style="color: #e11e1e">{{ field.errors }}</div>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-outline-primary w-100"
+                            style="background-color: #41B3A3; color: black;"
+                            onmouseover="this.style.color='white'"
+                            onmouseout="this.style.color='black'">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Styles for highlighting Magic Mint color when in focus */
+    .magic-mint-focus:focus {
+        box-shadow: 0 0 5px #AAF0D1;
+    }
+</style>
+
+{% endblock %}

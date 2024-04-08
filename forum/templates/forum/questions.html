@@ -1,5 +1,27 @@
 {% extends 'base.html' %}
 {% block title %}Cozygames: Forum{% endblock %}
 {% block body %}
-<h1>Test from FORUM: Questions</h1>
+<style>
+    .list-group-item-action:hover {
+        background-color: #aaf0d1 !important;
+    }
+</style>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="text-center">Forum questions</h2>
+            <div class="list-group mt-3">
+                {% for question in questions %}
+                <a href="{% url 'forum:question_detail' question.id %}" class="list-group-item list-group-item-action"
+                   style="background-color: {% cycle '#ffefd5;' '#ffe1be;' %}">
+                    <div class="d-flex justify-content-between">
+                        <span>{{ question.name }}</span>
+                        <span>{{ question.date_update }}</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

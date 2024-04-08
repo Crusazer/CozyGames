@@ -1,5 +1,95 @@
 {% extends 'base.html' %}
 {% block title %}Cozygames: forum{% endblock %}
 {% block body %}
-<h1>Test INFO from FORUM: Themes</h1>
+<style>
+    .list-group-item-action:hover {
+        background-color: #aaf0d1 !important;
+    }
+</style>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 mt-5">
+            <h1 class="text-center">Forum Code of Conduct</h1>
+            <div class="card mt-4" style="background-color: #ffe1be;">
+                <div class="card-body">
+                    <ol>
+                        <li><strong>Respect Others:</strong> Treat fellow forum members with kindness and respect. Avoid
+                            personal attacks, harassment, or discrimination based on race, ethnicity, gender, religion,
+                            sexual orientation, or any other characteristic.
+                        </li>
+                        <li><strong>Be Civil and Constructive:</strong> Keep discussions civil and focused on
+                            constructive dialogue. Disagreements are natural, but express your viewpoints respectfully
+                            without resorting to hostility or insults.
+                        </li>
+                        <li><strong>Stay on Topic:</strong> When participating in discussions, stay on topic and avoid
+                            derailing threads with unrelated content. If you have a new topic to discuss, start a new
+                            thread rather than hijacking existing ones.
+                        </li>
+                        <li><strong>No Spam or Self-Promotion:</strong> Avoid spamming the forum with irrelevant or
+                            promotional content. Self-promotion should be limited and relevant to the discussion.
+                        </li>
+                        <li><strong>Respect Privacy:</strong> Do not share personal information about yourself or others
+                            without consent. Respect the privacy of fellow forum members.
+                        </li>
+                        <li><strong>Follow Guidelines and Instructions:</strong> Adhere to any specific guidelines or
+                            instructions provided by forum moderators. Failure to comply may result in moderation
+                            actions.
+                        </li>
+                        <li><strong>Use Appropriate Language and Content:</strong> Keep language and content appropriate
+                            for all audiences. Avoid offensive, obscene, or inappropriate language, images, or links.
+                        </li>
+                        <li><strong>Report Misconduct:</strong> If you encounter any behavior that violates these rules
+                            or makes you feel uncomfortable, report it to forum moderators for appropriate action.
+                        </li>
+                        <li><strong>Consequences of Violations:</strong> Violations of the forum code of conduct may
+                            result in warnings, temporary suspensions, or permanent bans from the forum, depending on
+                            the severity and frequency of the offense.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{% url 'forum:create_question' %}" class="create-question-link">Create new question</a>
+    <div class="list-group mt-3" id="forum-themes">
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="text-center">Forum Themes</h2>
+                <div class="list-group mt-3">
+                    {% for theme in themes %}
+                    <a href="{% url 'forum:questions' theme.id %}" class="list-group-item list-group-item-action"
+                       style="background-color: {% cycle '#ffefd5;' '#ffe1be;' %}">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ theme.name }}</span>
+                            <span>{{ theme.date_created }}</span>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .list-group-item-action:hover {
+        background-color: #aaf0d1 !important;
+    }
+
+    /* Стили для ссылки на создание нового вопроса */
+    .create-question-link {
+        display: block;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #ffe1be;
+        color: #000;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .create-question-link:hover {
+        background-color: #aaf0d1;
+    }
+</style>
 {% endblock %}

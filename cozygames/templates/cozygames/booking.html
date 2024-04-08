@@ -36,7 +36,7 @@
                         <form action="{% url 'cozygames:booking_table' %}" method="POST"
                               class="d-flex align-items-center">
                             {% csrf_token %}
-                            <input type="hidden" name="table_id" value="{{ table.number }}">
+                            <input type="hidden" name="table_id" value="{{ table.id }}">
                             <input type="hidden" name="date" value="{{ date|date:'Y-m-d' }}">
                             <input type="submit" value="Booking table" class="btn btn-primary"
                                    style="background-color: #41B3A3;">

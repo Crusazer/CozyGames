@@ -3,6 +3,12 @@ from . import models
 
 
 # Register your models here.
+class MessagesInline(admin.TabularInline):
+    model = models.Message
+    verbose_name_plural = 'messages'
+    extra = 0
+
+
 @admin.register(models.Theme)
 class ThemeAdmin(admin.ModelAdmin):
     pass
@@ -10,7 +16,7 @@ class ThemeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Question)
 class QuestionAdmin(admin.ModelAdmin):
-    pass
+    inlines = (MessagesInline,)
 
 
 @admin.register(models.Message)

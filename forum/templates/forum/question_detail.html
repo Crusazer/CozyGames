@@ -1,5 +1,58 @@
 {% extends 'base.html' %}
 {% block title %}Cozygames: Forum{% endblock %}
 {% block body %}
-<h1>Test from FORUM: Question_detail</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center">{{ question.name }}</h2>
+                    <div style="text-align: justify;">{{ question.text }}</div>
+                    <hr>
+                    {% for message in question_messages %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text" style="text-align: justify;">{{ message.text }}</p>
+                            <p class="card-text"><small class="text-muted">Posted by {{ message.user.username }} on
+                                {{ message.date }}</small></p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p>No messages yet.</p>
+                    {% endfor %}
+
+                    <!-- Form to send a message -->
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'forum:create_message' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="question" value="{{ question.id }}">
+                        <div class="mb-3">
+                            {% for field in form.visible_fields %}
+                            {{ field }}
+                            <div style="color: #e11e1e">{{ field.errors }}</div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" style="background-color: #41B3A3;">Send
+                        </button>
+                    </form>
+
+                    {% if form.non_field_errors %}
+                    <div style="color: #e11e1e">
+                        <ul class='form-errors'>
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="text-center text-muted">Sign in to send a message!</div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
