@@ -72,8 +72,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'cozygames_core.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -84,16 +82,6 @@ DATABASES = {
         'PORT': 5432
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'db.sqlite3'
-#     }
-# }
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 if DEBUG:
     AUTH_PASSWORD_VALIDATORS = []
@@ -114,8 +102,6 @@ else:
     ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Minsk'
@@ -128,6 +114,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

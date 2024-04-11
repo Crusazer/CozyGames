@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import QuerySet
+from django.core import validators
+
+from cozygames_core import settings
 
 
 class Theme(models.Model):
@@ -36,3 +39,26 @@ class Message(models.Model):
 
     def __str__(self):
         return f"Message from {self.user.username} on {self.date}"
+
+
+class ClientReview(models.Model):
+    user = models.ForeignKey(User, related_name='user', null=True, blank=True, on_delete=models.SET_NULL)
+    text = models.TextField(blank=False, null=False)
+    rating = models.PositiveSmallIntegerField(blank=False, null=False, validators=[validators.MinValueValidator(0),
+                                                                                   validators.MaxValueValidator(5)])
+    date_posted = models.DateTimeField(auto_now_add=True, null=False)
+    image = models.ImageField(upload_to='client_reviews/', blank=True, null=True)
+    objects: QuerySet
+
+    def get_photo_url(self) -> str | None:
+        if self.image:
+            return self.image.url
+
+    def get_thumbnail_url(self) -> str | None:
+        if self.image:
+            thumbnail_name = 'thumbnails/' + self.image.name.split('/')[-1]
+            return settings.MEDIA_URL + thumbnail_name
+        return None
+
+    def __str__(self):
+        return f"Review from {self.user or 'anonymous'} on {self.date_posted}"

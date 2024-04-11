@@ -4,8 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import generic
 
-from . import forms
-from . import models
+from . import forms, tasks, models
 
 
 class ThemesView(generic.ListView):
@@ -68,4 +67,35 @@ class CreateQuestionView(LoginRequiredMixin, generic.FormView):
 
     def form_invalid(self, form):
         messages.warning(self.request, "Incorrect input.")
+        return super().form_invalid(form)
+
+
+class ClientReviewView(generic.ListView):
+    model = models.ClientReview
+    ordering = ('date_posted',)
+    context_object_name = 'client_reviews'
+    template_name = 'forum/client_reviews.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['form'] = forms.CreateReviewForm()
+        return context
+
+
+class CreateClientReviewView(generic.FormView):
+    template_name = 'forum/client_reviews.html'
+    form_class = forms.CreateReviewForm
+
+    def form_valid(self, form: forms.CreateReviewForm):
+        review = form.save(commit=False)
+        if self.request.user.is_authenticated:
+            review.user = self.request.user
+        else:
+            review.user = None
+        review.save()
+        tasks.create_thumbnail_image.delay(review.__class__.__name__, review.id, (100, 100))
+        return redirect(reverse('forum:client_reviews'))
+
+    def form_invalid(self, form):
+        messages.warning(self.request, 'Incorrect input. Try again.')
         return super().form_invalid(form)

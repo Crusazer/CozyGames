@@ -1,5 +1,6 @@
 from django import forms
 from . import models
+from . import tasks
 
 
 class MessageForm(forms.ModelForm):
@@ -33,3 +34,23 @@ class CreateQuestionForm(forms.ModelForm):
         widgets = {
             'author': forms.HiddenInput(),
         }
+
+
+class CreateReviewForm(forms.ModelForm):
+    class Meta:
+        RATING_CHOICES = [(i, str(i)) for i in range(1, 6)]
+        model = models.ClientReview
+        fields = ('text', 'rating', 'image')
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-control magic-mint-focus', 'rows': 5,
+                                          'placeholder': 'Enter your review here...'}),
+            'rating': forms.Select(choices=RATING_CHOICES, attrs={'class': 'form-select'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+    # def save(self, commit=True, *args, **kwargs):
+    #     instance = super().save(*args, **kwargs)
+    #     if instance.image and commit:
+    #         tasks.create_thumbnail_image.delay(instance.__class__.__name__, instance.id, (100, 100))
+    #
+    #     return instance

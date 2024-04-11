@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Cozygames: Client Reviews{% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center">Client Reviews</h2>
+                    <hr>
+                    {% for review in client_reviews %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text">{{ review.text }}</p>
+                            <p class="card-text"><small class="text-muted">Rating: {{ review.rating }}</small></p>
+                            {% if review.image %}
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <img src="{{ review.get_thumbnail_url }}" class="card-img-top img-thumbnail" alt="Review Photo"  style="width: 100px; height: 100px;">
+                            </a>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="{{ review.get_photo_url }}" class="img-fluid" alt="Review Photo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <p class="card-text"><small class="text-muted">Posted by {{ review.user.username }} on
+                                {{ review.date_posted }}</small></p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p>No client reviews yet.</p>
+                    {% endfor %}
+
+                    <!-- Form to submit a new review -->
+                    <form action="{% url 'forum:create_review' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

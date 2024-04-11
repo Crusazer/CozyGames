@@ -22,3 +22,8 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(models.Message)
 class MessageAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.ClientReview)
+class ClientReviewAdmin(admin.ModelAdmin):
+    pass
