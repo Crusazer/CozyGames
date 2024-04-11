@@ -9,5 +9,6 @@ urlpatterns = [
     path('create_message/', views.CreateMessageView.as_view(), name='create_message'),
     path('create_question/', views.CreateQuestionView.as_view(), name='create_question'),
     path('client_reviews/', views.ClientReviewView.as_view(), name='client_reviews'),
-    path('create_review/', views.CreateClientReviewView.as_view(), name='create_review')
+    path('create_review/', views.CreateClientReviewView.as_view(), name='create_review'),
+    path('blog/', views.BlogView.as_view(), name='blog')
 ]

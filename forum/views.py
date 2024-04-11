@@ -96,3 +96,12 @@ class CreateClientReviewView(generic.FormView):
         review.save()
         tasks.create_thumbnail_image.delay(review.__class__.__name__, review.id, (75, 75))
         return redirect(reverse('forum:client_reviews'))
+
+
+class BlogView(generic.ListView):
+    model = models.Article
+    ordering = ('-date_posted', '-pk')
+    context_object_name = 'articles'
+    template_name = 'forum/articles.html'
+    paginate_by = 10
+    queryset = model.objects.all().prefetch_related('images')

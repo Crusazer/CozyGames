@@ -9,6 +9,12 @@ class MessagesInline(admin.TabularInline):
     extra = 0
 
 
+class ArticleImagesInline(admin.TabularInline):
+    model = models.ArticleImage
+    verbose_name_plural = 'Images'
+    extra = 0
+
+
 @admin.register(models.Theme)
 class ThemeAdmin(admin.ModelAdmin):
     pass
@@ -27,3 +33,8 @@ class MessageAdmin(admin.ModelAdmin):
 @admin.register(models.ClientReview)
 class ClientReviewAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.Article)
+class ArticleAdmin(admin.ModelAdmin):
+    inlines = (ArticleImagesInline,)

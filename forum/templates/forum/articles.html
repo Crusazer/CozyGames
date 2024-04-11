@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Blog{% endblock %}
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div style="background-color: #ffe1be;">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Welcome to our blog</h2>
+                        <hr>
+                        {% for article in articles %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h4 class="card-text text-center">{{ article.title }}</h4>
+                                <p class="card-text">{{ article.text }}</p>
+                                <div class="d-flex flex-wrap">
+                                    {% if article.images %}
+                                    {% for image in article.images.all %}
+                                    <a href="#" class="thumbnail-link" data-bs-toggle="modal"
+                                       data-bs-target="#image_modal_{{ article.id }}_{{ image.id }}">
+                                        <img src="{{ image.image.url }}" class="img-thumbnail me-2 mb-2"
+                                             alt="Article image" style="width: 75px; height: 75px;">
+                                    </a>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="image_modal_{{ article.id }}_{{ image.id }}"
+                                         tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl">
+                                            <div class="modal-content">
+                                                <div class="modal-body">
+                                                    <div id="carousel_{{ article.id }}_{{ image.id }}"
+                                                         class="carousel slide" data-bs-ride="carousel">
+                                                        <div class="carousel-inner">
+                                                            {% for img in article.images.all %}
+                                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                                <img src="{{ img.image.url }}" class="d-block w-100"
+                                                                     alt="Review Photo">
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                        <button class="carousel-control-prev" type="button"
+                                                                data-bs-target="#carousel_{{ article.id }}_{{ image.id }}"
+                                                                data-bs-slide="prev">
+                                                            <span class="carousel-control-prev-icon"
+                                                                  aria-hidden="true"></span>
+                                                            <span class="visually-hidden">Previous</span>
+                                                        </button>
+                                                        <button class="carousel-control-next" type="button"
+                                                                data-bs-target="#carousel_{{ article.id }}_{{ image.id }}"
+                                                                data-bs-slide="next">
+                                                            <span class="carousel-control-next-icon"
+                                                                  aria-hidden="true"></span>
+                                                            <span class="visually-hidden">Next</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p>Haven't published any articles yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        $('.thumbnail-link').on('click', function() {
+            var modalId = $(this).data('bs-target');
+            var index = $(this).closest('.card').find('.thumbnail-link').index(this);
+            $(modalId).find('.carousel').carousel(index);
+        });
+    });
+</script>
+{% endblock %}

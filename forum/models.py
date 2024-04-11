@@ -7,16 +7,16 @@ from cozygames_core import settings
 
 
 class Theme(models.Model):
-    name = models.CharField(max_length=100, null=False, blank=False)
+    title = models.CharField(max_length=100, null=False, blank=False)
     date_created = models.DateField(auto_now_add=True, null=False)
     objects: QuerySet
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Question(models.Model):
-    name = models.CharField(max_length=300, null=False, blank=False)
+    title = models.CharField(max_length=300, null=False, blank=False)
     text = models.TextField(max_length=500, null=False, blank=True, default='')
     theme = models.ForeignKey(Theme, related_name='questions', null=False, blank=False, on_delete=models.CASCADE)
     author = models.ForeignKey(User, related_name='questions', null=False, blank=False, on_delete=models.CASCADE)
@@ -25,7 +25,7 @@ class Question(models.Model):
     objects: QuerySet
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Message(models.Model):
@@ -62,3 +62,22 @@ class ClientReview(models.Model):
 
     def __str__(self):
         return f"Review from {self.user or 'anonymous'} on {self.date_posted}"
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=300, null=False, blank=False)
+    text = models.TextField(null=False, blank=False)
+    date_posted = models.DateField(auto_now_add=True, null=False)
+    objects: QuerySet
+
+    def __str__(self):
+        return self.title
+
+
+class ArticleImage(models.Model):
+    image = models.ImageField(upload_to='articles/', blank=True, null=True)
+    article = models.ForeignKey(Article, related_name='images', null=False, blank=False, on_delete=models.CASCADE)
+    objects: QuerySet
+
+    def __str__(self):
+        return f"Image from {self.article.title}"

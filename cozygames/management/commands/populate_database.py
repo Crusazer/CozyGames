@@ -50,20 +50,20 @@ class Command(BaseCommand):
 
             # Load data for model Theme
             for theme_data in themes_data:
-                Theme.objects.create(name=theme_data['name'], date_created=theme_data['date_created'])
+                Theme.objects.create(title=theme_data['title'], date_created=theme_data['date_created'])
 
             # Load data for model Question
             for question_datas, user_data, themes_data in zip(questions_data, users_data, themes_data):
-                theme = Theme.objects.get(name=themes_data['name'])
+                theme = Theme.objects.get(title=themes_data['title'])
                 author = User.objects.get(username=user_data['username'])
-                Question.objects.create(name=question_datas['name'], theme=theme, author=author,
+                Question.objects.create(title=question_datas['title'], theme=theme, author=author,
                                         date_created=question_datas['date_created'],
                                         date_update=question_datas['date_update'])
 
             # Load data for model Message
             for message_data, user_data, question_data in zip(messages_data, users_data, questions_data):
                 user = User.objects.get(username=user_data['username'])
-                question = Question.objects.get(name=question_data['name'])
+                question = Question.objects.get(title=question_data['title'])
                 Message.objects.create(user=user, question=question, text=message_data['text'],
                                        date=message_data['date'])
 

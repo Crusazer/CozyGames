@@ -1,6 +1,7 @@
 from celery import shared_task
 from PIL import Image
 from django.core.exceptions import ObjectDoesNotExist
+import os
 import logging
 from django.apps import apps
 
@@ -14,7 +15,8 @@ def create_thumbnail_image(model_name, instance_id: int, size: tuple):
         instance = Model.objects.get(id=instance_id)
         if instance.image:
             image_path = instance.image.path
-            thumbnail_path = 'media/thumbnails/' + instance.image.name.split('/')[-1]
+            image_name = os.path.basename(image_path)
+            thumbnail_path = f'media/thumbnails/{image_name}'
 
             image = Image.open(image_path)
 

@@ -104,49 +104,49 @@
   ],
   "themes": [
     {
-      "name": "Theme 1",
+      "title": "Theme 1",
       "date_created": "2024-04-01"
     },
     {
-      "name": "Theme 2",
+      "title": "Theme 2",
       "date_created": "2024-04-02"
     },
     {
-      "name": "Theme 3",
+      "title": "Theme 3",
       "date_created": "2024-04-03"
     },
     {
-      "name": "Theme 4",
+      "title": "Theme 4",
       "date_created": "2024-04-04"
     },
     {
-      "name": "Theme 5",
+      "title": "Theme 5",
       "date_created": "2024-04-05"
     }
   ],
   "questions": [
     {
-      "name": "Question 1",
+      "title": "Question 1",
       "date_created": "2024-04-01",
       "date_update": "2024-04-01"
     },
     {
-      "name": "Question 2",
+      "title": "Question 2",
       "date_created": "2024-04-02",
       "date_update": "2024-04-02"
     },
     {
-      "name": "Question 3",
+      "title": "Question 3",
       "date_created": "2024-04-03",
       "date_update": "2024-04-03"
     },
     {
-      "name": "Question 4",
+      "title": "Question 4",
       "date_created": "2024-04-04",
       "date_update": "2024-04-04"
     },
     {
-      "name": "Question 5",
+      "title": "Question 5",
       "date_created": "2024-04-05",
       "date_update": "2024-04-05"
     }

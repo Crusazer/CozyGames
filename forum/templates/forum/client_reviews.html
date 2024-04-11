@@ -16,12 +16,12 @@
                                 <p class="card-text">{{ review.text }}</p>
                                 <p class="card-text"><small class="text-muted">Rating: {{ review.rating }}</small></p>
                                 {% if review.image %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ review.id }}">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#image_modal_{{ review.id }}">
                                     <img src="{{ review.get_thumbnail_url }}" class="card-img-top img-thumbnail"
                                          alt="Review Photo" style="width: 75px; height: 75px;">
                                 </a>
                                 <!-- Modal -->
-                                <div class="modal fade" id="exampleModal{{ review.id }}" tabindex="-1"
+                                <div class="modal fade" id="image_modal_{{ review.id }}" tabindex="-1"
                                      aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
