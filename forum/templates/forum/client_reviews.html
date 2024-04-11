@@ -5,46 +5,109 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title text-center">Client Reviews</h2>
-                    <hr>
-                    {% for review in client_reviews %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <p class="card-text">{{ review.text }}</p>
-                            <p class="card-text"><small class="text-muted">Rating: {{ review.rating }}</small></p>
-                            {% if review.image %}
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <img src="{{ review.get_thumbnail_url }}" class="card-img-top img-thumbnail" alt="Review Photo"  style="width: 100px; height: 100px;">
-                            </a>
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-body">
-                                            <img src="{{ review.get_photo_url }}" class="img-fluid" alt="Review Photo">
+                <div style="background-color: #ffe1be;">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Client Reviews</h2>
+                        <hr>
+                        {% for review in client_reviews %}
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+                                <p class="card-text">{{ review.text }}</p>
+                                <p class="card-text"><small class="text-muted">Rating: {{ review.rating }}</small></p>
+                                {% if review.image %}
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal{{ review.id }}">
+                                    <img src="{{ review.get_thumbnail_url }}" class="card-img-top img-thumbnail"
+                                         alt="Review Photo" style="width: 75px; height: 75px;">
+                                </a>
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModal{{ review.id }}" tabindex="-1"
+                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <img src="{{ review.get_photo_url }}" class="img-fluid"
+                                                     alt="Review Photo">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
+                                <p class="card-text"><small class="text-muted">Posted by
+                                    {% if review.user.username %} {{ review.user.username }}
+                                    {% else %} anonymous {% endif %}
+                                    on {{ review.date_posted }}</small></p>
                             </div>
-                            {% endif %}
-                            <p class="card-text"><small class="text-muted">Posted by {{ review.user.username }} on
-                                {{ review.date_posted }}</small></p>
                         </div>
+                        {% empty %}
+                        <p>No client reviews yet.</p>
+                        {% endfor %}
                     </div>
-                    {% empty %}
-                    <p>No client reviews yet.</p>
-                    {% endfor %}
 
-                    <!-- Form to submit a new review -->
-                    <form action="{% url 'forum:create_review' %}" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit" class="btn btn-primary w-100">Submit Review</button>
-                    </form>
+                    <!-- Pagination buttons -->
+                    <div class="mt-4">
+                        {% if is_paginated %}
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                            </li>
+                            {% endif %}
+                            {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li class="page-item"><span class="page-link"
+                                                        style="background-color: #41B3A3; color: #fff;">{{ num }}</span>
+                            </li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?page={{ page_obj.next_page_number }}">Next</a>
+                            </li>
+                            <li class="page-item"><a class="page-link"
+                                                     href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div style="background-color: #ffe1be;">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Leave feedback</h2>
+                        <hr>
+
+                        <!-- Form to submit a new review -->
+                        <form action="{% url 'forum:create_review' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+<button type="submit" class="btn btn-primary w-100" data-toggle="modal" data-target="#profileModal"
+        style="background-color: #aaf0d1; color: black;"
+        onmouseover="this.style.backgroundColor='#41B3A3';"
+        onmouseout="this.style.backgroundColor='#aaf0d1';">Submit Review
+</button>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Styles for highlighting Magic Mint color when in focus */
+    .magic-mint-focus:focus {
+        box-shadow: 0 0 5px #AAF0D1;
+    }
+</style>
 {% endblock %}

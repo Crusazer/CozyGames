@@ -72,9 +72,10 @@ class CreateQuestionView(LoginRequiredMixin, generic.FormView):
 
 class ClientReviewView(generic.ListView):
     model = models.ClientReview
-    ordering = ('date_posted',)
+    ordering = ('-date_posted',)
     context_object_name = 'client_reviews'
     template_name = 'forum/client_reviews.html'
+    paginate_by = 2
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
@@ -93,9 +94,5 @@ class CreateClientReviewView(generic.FormView):
         else:
             review.user = None
         review.save()
-        tasks.create_thumbnail_image.delay(review.__class__.__name__, review.id, (100, 100))
+        tasks.create_thumbnail_image.delay(review.__class__.__name__, review.id, (75, 75))
         return redirect(reverse('forum:client_reviews'))
-
-    def form_invalid(self, form):
-        messages.warning(self.request, 'Incorrect input. Try again.')
-        return super().form_invalid(form)

@@ -44,8 +44,8 @@ class CreateReviewForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'class': 'form-control magic-mint-focus', 'rows': 5,
                                           'placeholder': 'Enter your review here...'}),
-            'rating': forms.Select(choices=RATING_CHOICES, attrs={'class': 'form-select'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'rating': forms.Select(choices=RATING_CHOICES, attrs={'class': 'form-select magic-mint-focus'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control magic-mint-focus'}),
         }
 
     # def save(self, commit=True, *args, **kwargs):
