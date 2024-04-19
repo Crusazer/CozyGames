@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import QuerySet
 from django.core import validators
+from django.utils.translation import gettext_lazy as _
 
 from cozygames_core import settings
 
@@ -81,3 +82,52 @@ class ArticleImage(models.Model):
 
     def __str__(self):
         return f"Image from {self.article.title}"
+
+
+class Tournament(models.Model):
+    class Type(models.TextChoices):
+        OPEN = 'OP', _('open')
+        CLOSED = 'CL', _("closed")
+
+    author: User = models.ForeignKey(User, related_name='tournaments', null=True, blank=False,
+                                     on_delete=models.SET_NULL)
+    type: str = models.CharField(max_length=2, choices=Type, default=Type.OPEN)
+    title: str = models.TextField(max_length=50, null=False, blank=False)
+    prize_pool: str = models.CharField(max_length=200, null=True, blank=False)
+    prize_distribution: str = models.TextField(null=True, blank=False)
+    date = models.DateTimeField(null=False, blank=False)
+    max_players: int = models.PositiveSmallIntegerField(null=False, blank=False)
+    rules: str = models.TextField(null=True, blank=True)
+    approved: bool = models.BooleanField(default=False, blank=True)
+    objects: QuerySet
+
+    def __str__(self):
+        return self.title
+
+
+class TournamentParticipant(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'P', _('pending')
+        APPROVED = 'A', _('approved')
+
+    user = models.ForeignKey(User, related_name='tournaments_participant', on_delete=models.CASCADE, blank=False, null=False)
+    tournament = models.ForeignKey(Tournament, related_name='participants', on_delete=models.CASCADE, null=False,
+                                   blank=False)
+    status = models.CharField(max_length=1, choices=Status, default=Status.PENDING)
+    joined_at = models.DateTimeField(auto_now=True)
+    objects: QuerySet
+
+    def __str__(self):
+        return f"{self.user.username} in tournament {self.tournament.title}"
+
+
+class TournamentWinner(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
+    tournament = models.ForeignKey(Tournament, related_name='winners', on_delete=models.CASCADE, blank=False,
+                                   null=False)
+    position = models.PositiveSmallIntegerField(null=False, blank=False)
+    objects: QuerySet
+
+    def __str__(self):
+        return f"Winner {self.user.username} on {self.position} position of {self.tournament.title}"
+

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Tournaments{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12">
+            <h1 class="text-center">Tournaments</h1>
+            <div class="card mt-4" style="background-color: #ffe1be;">
+                <div class="card-body">
+                    <p>
+                        Welcome to our tournaments page! Here you can participate in exciting competitions of tabletop
+                        games or create your own tournament. We offer various types of tournaments, including open and
+                        closed ones.
+                    </p>
+                    <p>
+                        <strong>Open Tournaments:</strong> Anyone interested can join open tournaments without any
+                        restrictions. Simply choose the tournament you're interested in and apply to participate!
+                    </p>
+                    <p>
+                        <strong>Closed Tournaments:</strong> Some tournaments may be available by invitation only or
+                        after confirmation by the creator. If you have an invitation or want to create your own closed
+                        tournament, please contact the site administrator or create your tournament with the appropriate
+                        settings.
+                    </p>
+                    <p>
+                        Remember that participation in tournaments implies adherence to the general rules of conducting
+                        competitions:
+                    </p>
+                    <ol>
+                        <li><strong>Respect Others:</strong> Treat fellow participants with kindness and respect. Avoid
+                            insults, discrimination, or any other form of intolerance.
+                        </li>
+                        <li><strong>Be Civil and Constructive:</strong> Maintain polite and constructive dialogue.
+                            Disagreements are normal, but express your viewpoints respectfully, without hostility or
+                            insults.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <a href="{% url 'forum:create_tournament' %}" class="create-question-link">Create own tournament</a>
+            <a href="{% url 'forum:finished_tournaments' %}" class="create-question-link">Finished tournaments</a>
+            <!-- List of active tournaments -->
+            <div class="list-group mt-3">
+                {% for tournament in tournaments %}
+                <a href="{% url 'forum:tournament_detail' tournament.id %}"
+                   class="list-group-item list-group-item-action"
+                   style="background-color: {% cycle '#ffefd5;' '#ffe1be;' %}">
+                    <div class="d-flex justify-content-between">
+                        <span>{{ tournament.title }}</span>
+                        <span>{{ tournament.date }}</span>
+                    </div>
+                </a>
+                {% empty %}
+                <h3 class="text-center">There are no tournaments scheduled yet. You can create your own</h3>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .list-group-item-action:hover {
+        background-color: #aaf0d1 !important;
+    }
+
+    .create-question-link {
+        display: block;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #ffe1be;
+        color: #000;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .create-question-link:hover {
+        background-color: #aaf0d1;
+    }
+</style>
+<style>
+    .list-group-item-action:hover {
+        background-color: #aaf0d1 !important;
+    }
+</style>
+{% endblock %}

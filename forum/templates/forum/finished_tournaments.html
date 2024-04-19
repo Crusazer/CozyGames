@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Tournaments {% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12">
+            <h1 class="text-center">Finished tournaments</h1>
+                <!-- List of active tournaments -->
+                <div class="list-group mt-3">
+                    {% for tournament in tournaments %}
+                    <a href="{% url 'forum:finished_tournament_detail' tournament.id %}"
+                       class="list-group-item list-group-item-action"
+                       style="background-color: {% cycle '#ffefd5;' '#ffe1be;' %}">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ tournament.title }}</span>
+                            <span>{{ tournament.date }}</span>
+                        </div>
+                    </a>
+                    {% empty %}
+                    <h3 class="text-center">There are no tournaments yet.</h3>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .list-group-item-action:hover {
+        background-color: #aaf0d1 !important;
+    }
+
+    .create-question-link {
+        display: block;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #ffe1be;
+        color: #000;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .create-question-link:hover {
+        background-color: #aaf0d1;
+    }
+</style>
+<style>
+    .list-group-item-action:hover {
+        background-color: #aaf0d1 !important;
+    }
+</style>
+{% endblock %}

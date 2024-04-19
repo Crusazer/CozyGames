@@ -1,8 +1,13 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.db.models import Prefetch
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
+from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.views import generic
+from django.views.decorators.cache import cache_page
 
 from . import forms, tasks, models
 
@@ -105,3 +110,158 @@ class BlogView(generic.ListView):
     template_name = 'forum/articles.html'
     paginate_by = 10
     queryset = model.objects.all().prefetch_related('images')
+
+
+class TournamentsView(generic.ListView):
+    model = models.Tournament
+    ordering = ('-date', '-pk')
+    context_object_name = 'tournaments'
+    template_name = 'forum/tournaments.html'
+
+    def get_queryset(self):
+        return self.model.objects.filter(date__gte=timezone.now(), approved=True).all()
+
+
+class FinishedTournamentsView(generic.ListView):
+    model = models.Tournament
+    ordering = ('-date', '-pk')
+    context_object_name = 'tournaments'
+    template_name = 'forum/finished_tournaments.html'
+
+    @classmethod
+    def as_view(cls):
+        view = super().as_view()
+        return cache_page(60 * 60 * 1)(view)  # Cache the page for 3 hours
+
+    def get_queryset(self):
+        return self.model.objects.filter(date__lte=timezone.now(), approved=True).all()
+
+
+class TournamentDetailView(generic.DetailView):
+    model = models.Tournament
+    template_name = 'forum/tournament_detail.html'
+    context_object_name = 'tournament'
+    pk_url_kwarg = 'tournament_id'
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related(
+            Prefetch('participants', queryset=models.TournamentParticipant.objects.select_related('user'))
+        )
+
+
+class FinishedTournamentDetailView(generic.DetailView):
+    model = models.Tournament
+    template_name = 'forum/finished_tournament_detail.html'
+    context_object_name = 'tournament'
+    pk_url_kwarg = 'tournament_id'
+
+    @classmethod
+    def as_view(cls):
+        view = super().as_view()
+        return cache_page(60 * 60 * 3)(view)  # Cache the page for 3 hours
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related(
+            Prefetch('winners', queryset=models.TournamentWinner.objects.select_related('user')),
+            Prefetch('participants', queryset=models.TournamentParticipant.objects.select_related('user'))
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            if models.TournamentParticipant.objects.filter(tournament=self.kwargs.get('tournament_id'),
+                                                           user=self.request.user).first():
+                context['user_is_joined'] = True
+        return context
+
+    @method_decorator(login_required)
+    def post(self, *args, **kwargs):
+        tournament: models.Tournament = self.model.objects.filter(pk=self.request.POST.get('tournament_id', 0)).first()
+
+        if not tournament:
+            messages.warning(self.request, 'This tournament non exists')
+
+        elif timezone.now() > tournament.date:
+            messages.warning(self.request, "You can't join to finished the tournament.")
+
+        elif models.TournamentParticipant.objects.filter(user=self.request.user, tournament=tournament):
+            messages.warning(self.request, "You have already submitted")
+
+        else:
+            tournament_participant = models.TournamentParticipant(user=self.request.user, tournament=tournament)
+            if tournament.type == models.Tournament.Type.OPEN:
+                tournament_participant.status = models.TournamentParticipant.Status.APPROVED
+                messages.success(self.request, "You have joined the tournament.")
+            else:
+                messages.success(self.request, "Your application has been accepted.")
+            tournament_participant.save()
+
+        return redirect(
+            reverse('forum:tournament_detail', args=(tournament.pk,))) if tournament else (
+            redirect('forum:tournaments'))
+
+
+class AddParticipantView(LoginRequiredMixin, generic.View):
+    model = models.Tournament
+
+    def post(self, *args, **kwargs):
+        tournament = get_object_or_404(self.model, pk=self.request.POST.get('tournament_id', 0))
+
+        if self.request.user == tournament.author:
+            participant: models.TournamentParticipant = get_object_or_404(models.TournamentParticipant,
+                                                                          pk=self.request.POST.get('participant_id', 0))
+            if tournament.participants.count() < tournament.max_players:
+                participant.status = models.TournamentParticipant.Status.APPROVED
+                participant.save()
+                messages.success(self.request, f"{participant.user.username} has been successfully added to "
+                                               f"the list of participants.")
+            else:
+                messages.warning(self.request,
+                                 f"{participant.user.username} was not added. Maximum number of players reached"
+                                 f" in the tournament.")
+
+        return redirect(reverse('forum:tournament_detail', args=(tournament.pk,)))
+
+
+class RemoveParticipantView(LoginRequiredMixin, generic.View):
+    model = models.Tournament
+
+    def post(self, *args, **kwargs):
+        tournament = get_object_or_404(self.model, pk=self.request.POST.get('tournament_id', 0))
+
+        if self.request.user == tournament.author:
+            participant: models.TournamentParticipant = get_object_or_404(models.TournamentParticipant,
+                                                                          pk=self.request.POST.get('participant_id', 0))
+
+            if tournament.type == self.model.Type.OPEN:
+                participant.delete()
+            elif tournament.type == models.Tournament.Type.CLOSED:
+                participant.status = models.TournamentParticipant.Status.PENDING
+                participant.save()
+
+            messages.success(self.request,
+                             f"{participant.user.username} has been successfully excluded from the list of "
+                             f"participants.")
+
+        return redirect(reverse('forum:tournament_detail', args=(tournament.pk,)))
+
+
+class LeaveTournamentView(LoginRequiredMixin, generic.View):
+    def post(self, *args, **kwargs):
+        tournament = get_object_or_404(models.Tournament, pk=self.request.POST.get('tournament_id', 0))
+        participant = models.TournamentParticipant.objects.filter(user=self.request.user, tournament=tournament).first()
+        if participant:
+            participant.delete()
+            messages.success(self.request, "You have left the tournament.")
+        return redirect(reverse('forum:tournament_detail', args=(tournament.pk,)))
+
+
+class CreateTournamentView(LoginRequiredMixin, generic.FormView):
+    template_name = 'forum/create_tournament.html'
+    form_class = forms.CreateTournamentForm
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, "The tournament has been successfully created. Please await moderator "
+                                       "approval.")
+        return redirect(reverse('forum:tournaments'))

@@ -90,13 +90,12 @@
                         <form action="{% url 'forum:create_review' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
-<button type="submit" class="btn btn-primary w-100" data-toggle="modal" data-target="#profileModal"
-        style="background-color: #aaf0d1; color: black;"
-        onmouseover="this.style.backgroundColor='#41B3A3';"
-        onmouseout="this.style.backgroundColor='#aaf0d1';">Submit Review
-</button>
-
-
+                            <button type="submit" class="btn btn-primary w-100" data-toggle="modal"
+                                    data-target="#profileModal"
+                                    style="background-color: #aaf0d1; color: black;"
+                                    onmouseover="this.style.backgroundColor='#41B3A3';"
+                                    onmouseout="this.style.backgroundColor='#aaf0d1';">Submit Review
+                            </button>
                         </form>
                     </div>
                 </div>

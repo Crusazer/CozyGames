@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Tournament {% endblock %}
+{% block body %}
+{% if tournament.approved %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header" style="background-color: #ffe1be;">
+                    <h2 class="card-title text-center">{{ tournament.title }}</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Type:</strong> {{ tournament.get_type_display }}</li>
+                        <li class="list-group-item"><strong>Prize Pool:</strong> {{ tournament.prize_pool }}</li>
+                        <li class="list-group-item"><strong>Prize Distribution:</strong>
+                            {{ tournament.prize_distribution|linebreaks }}
+                        <li class="list-group-item"><strong>Date of Holding:</strong> {{ tournament.date }}</li>
+                        <li class="list-group-item"><strong>Max Players:</strong> {{ tournament.max_players }}</li>
+                        <li class="list-group-item"><strong>Rules:</strong> {{ tournament.rules }}</li>
+                    </ul>
+                    {% if user_is_joined %}
+                    <form action="{% url 'forum:leave_tournament' %}" method="post"
+                          class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
+                        <button type="submit" class="btn btn-primary w-100">Leave</button>
+                    </form>
+                    {% else %}
+                    <form action="{% url 'forum:tournament_detail' tournament.id %}" method="post"
+                          class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
+                        <button type="submit" class="btn btn-primary w-100">Join</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header" style="background-color: #ffe1be;">
+                    <h2 class="card-title text-center">List of participants in the tournament</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for participant in tournament.participants.all %}
+                        {% if participant.status == 'A' %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {% if user == tournament.author %}
+                            <div>{{ participant.user.username }}</div>
+                            <form method="post" action="{% url 'forum:remove_participant' %}">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ participant.pk }}" name="participant_id">
+                                <input type="hidden" value="{{ tournament.pk }}" name="tournament_id">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                            {% else %}
+                            <div class="text-center w-100">{{ participant.user.username }}</div>
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                        {% empty %}
+                        <li class="list-group-item text-center">No one has joined yet</li>
+                        {% endfor %}
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if tournament.type == 'CL' %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header" style="background-color: #ffe1be;">
+                    <h2 class="card-title text-center">Wish to be joined</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush text-center">
+                        {% for participant in tournament.participants.all %}
+                        {% if participant.status == 'P' %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {% if user == tournament.author %}
+                            <div>{{ participant.user.username }}</div>
+                            <form method="post" action="{% url 'forum:add_participant' %}">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ participant.pk }}" name="participant_id">
+                                <input type="hidden" value="{{ tournament.id }}" name="tournament_id">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </form>
+                            {% else %}
+                            <div class="text-center w-100">{{ participant.user.username }}</div>
+                            {% endif %}
+                            {% endif %}
+                            {% empty %}
+                        <li class="list-group list-group-flush text-center">No one wish to be joined yet</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% else %}
+<h1 class="text-center">This is not approved tournament</h1>
+{% endif %}
+{% endblock %}

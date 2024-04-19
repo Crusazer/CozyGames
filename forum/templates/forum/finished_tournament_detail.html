@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}CozyGames: Tournament {% endblock %}
+{% block body %}
+{% if tournament.approved %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header" style="background-color: #ffe1be;">
+                    <h2 class="card-title text-center">{{ tournament.title }}</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Type:</strong> {{ tournament.get_type_display }}</li>
+                        <li class="list-group-item"><strong>Prize Pool:</strong> {{ tournament.prize_pool }}</li>
+                        <li class="list-group-item"><strong>Prize Distribution:</strong>
+                            {{ tournament.prize_distribution|linebreaks }}
+                        <li class="list-group-item"><strong>Date of Holding:</strong> {{ tournament.date }}</li>
+                        <li class="list-group-item"><strong>Max Players:</strong> {{ tournament.max_players }}</li>
+                        <li class="list-group-item"><strong>Rules:</strong> {{ tournament.rules }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- List of winners -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header" style="background-color: #ffe1be;">
+                    <h2 class="card-title text-center">List of winners in the tournament</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for winner in tournament.winners.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>{{ winner.position }}</div>
+                            <div>{{ winner.user.username }}</div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center">Nobody won</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- List of participants -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header" style="background-color: #ffe1be;">
+                    <h2 class="card-title text-center">List of participants in the tournament</h2>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for participants in tournament.participants.all %}
+                        <li class="list-group-item d-flex justify-content-center align-items-center">
+                            <div>{{ participants.user.username }}</div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center">Nobody won</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<h1 class="text-center">This is not tournament yet.</h1>
+{% endif %}
+{% endblock %}

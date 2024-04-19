@@ -15,6 +15,18 @@ class ArticleImagesInline(admin.TabularInline):
     extra = 0
 
 
+class TournamentParticipantsInline(admin.TabularInline):
+    model = models.TournamentParticipant
+    verbose_name_plural = 'Tournament participants'
+    extra = 0
+
+
+class TournamentWinnersInline(admin.TabularInline):
+    model = models.TournamentWinner
+    verbose_name_plural = 'Winners'
+    extra = 0
+
+
 @admin.register(models.Theme)
 class ThemeAdmin(admin.ModelAdmin):
     pass
@@ -38,3 +50,13 @@ class ClientReviewAdmin(admin.ModelAdmin):
 @admin.register(models.Article)
 class ArticleAdmin(admin.ModelAdmin):
     inlines = (ArticleImagesInline,)
+
+
+@admin.register(models.Tournament)
+class TournamentAdmin(admin.ModelAdmin):
+    inlines = (TournamentParticipantsInline, TournamentWinnersInline)
+
+
+@admin.register(models.TournamentParticipant)
+class TournamentParticipant(admin.ModelAdmin):
+    pass

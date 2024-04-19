@@ -150,6 +150,7 @@ class VotingView(generic.View):
 
 
 class CardGameInfoView(View):
+    @method_decorator(cache_page(60 * 60 * 3))  # 3 hors
     def get(self, request, game_id):
         game = get_object_or_404(CardGame, pk=game_id)
         return render(request, 'cozygames/card_game_info.html', {'game': game})
