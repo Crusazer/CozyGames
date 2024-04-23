@@ -79,6 +79,7 @@ class ClientReviewView(generic.ListView):
     model = models.ClientReview
     ordering = ('-date_posted',)
     context_object_name = 'client_reviews'
+    queryset = model.objects.filter(approved=True)
     template_name = 'forum/client_reviews.html'
     paginate_by = 2
 
@@ -265,3 +266,23 @@ class CreateTournamentView(LoginRequiredMixin, generic.FormView):
         messages.success(self.request, "The tournament has been successfully created. Please await moderator "
                                        "approval.")
         return redirect(reverse('forum:tournaments'))
+
+
+class MyTournamentsView(LoginRequiredMixin, generic.ListView):
+    template_name = 'forum/my_tournaments.html'
+    context_object_name = 'my_tournaments'
+    model = models.Tournament
+    ordering = ('date',)
+
+    def get_queryset(self):
+        return self.model.objects.filter(author=self.request.user)
+
+
+class ParticipatingTournamentView(LoginRequiredMixin, generic.ListView):
+    template_name = 'forum/participating_tournaments.html'
+    context_object_name = 'tournaments'
+    model = models.Tournament
+    ordering = ('date',)
+
+    def get_queryset(self):
+        return self.model.objects.filter(participants__user=self.request.user)

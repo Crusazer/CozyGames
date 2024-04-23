@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Cozygames: Client Reviews{% endblock %}
 {% block body %}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card">
-                <div style="background-color: #ffe1be;">
+                <div style="background-color: var(--card-body-bg-color);">
                     <div class="card-body">
                         <h2 class="card-title text-center">Client Reviews</h2>
                         <hr>
@@ -56,7 +57,7 @@
                             {% for num in page_obj.paginator.page_range %}
                             {% if page_obj.number == num %}
                             <li class="page-item"><span class="page-link"
-                                                        style="background-color: #41B3A3; color: #fff;">{{ num }}</span>
+                                                        style="background-color: var(--hover-button-color); color: #fff;">{{ num }}</span>
                             </li>
                             {% else %}
                             <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
@@ -90,12 +91,10 @@
                         <form action="{% url 'forum:create_review' %}" method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
-                            <button type="submit" class="btn btn-primary w-100" data-toggle="modal"
-                                    data-target="#profileModal"
-                                    style="background-color: #aaf0d1; color: black;"
-                                    onmouseover="this.style.backgroundColor='#41B3A3';"
-                                    onmouseout="this.style.backgroundColor='#aaf0d1';">Submit Review
+                            <button type="submit" class="btn btn-primary w-100 custom-button" data-toggle="modal"
+                                    data-target="#profileModal">Submit Review
                             </button>
+
                         </form>
                     </div>
                 </div>

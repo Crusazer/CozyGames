@@ -6,24 +6,23 @@
         <div class="row">
             <h1 align="center">Your active bookings</h1>
         </div>
-<!-- Tiles of reservations -->
+        <!-- Tiles of reservations -->
         <div class="row-1 d-flex justify-content-center">
             <div style="display: flex; flex-wrap: wrap;">
                 {% if reservations %}
                 {% for reservation in reservations %}
-                <div class="card m-2 bg-warning" style="width: 18rem;">
-                    <div class="card-body" style="background-color: #ffe1be;">
+                <div class="card m-2 bg-warning text-center" style="width: 18rem;">
+                    <div class="card-body" style="background-color: var(--card-body-bg-color);">
                         <h5 class="card-title">Table {{ reservation.table.number }}</h5>
                         <p class="card-text">
                             Type of table: {{ reservation.table.get_type_display }}<br>
                         </p>
                         <p class="card-text">Date: {{ reservation.date }}</p>
                         <form action="{% url 'cozygames:cancel_bookings' %}" method="POST"
-                              class="d-flex align-items-center">
+                              class="d-flex justify-content-center">
                             {% csrf_token %}
                             <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
-                            <input type="submit" value="Cancel booking" class="btn btn-primary"
-                                   style="background-color: #41B3A3;">
+                            <input type="submit" value="Cancel booking" class="btn btn-primary custom-button">
                         </form>
                     </div>
                 </div>

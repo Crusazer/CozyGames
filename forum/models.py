@@ -49,6 +49,7 @@ class ClientReview(models.Model):
                                                                                    validators.MaxValueValidator(5)])
     date_posted = models.DateTimeField(auto_now_add=True, null=False)
     image = models.ImageField(upload_to='client_reviews/', blank=True, null=True)
+    approved = models.BooleanField(default=False, blank=True, null=False)
     objects: QuerySet
 
     def get_photo_url(self) -> str | None:
@@ -87,7 +88,7 @@ class ArticleImage(models.Model):
 class Tournament(models.Model):
     class Type(models.TextChoices):
         OPEN = 'OP', _('open')
-        CLOSED = 'CL', _("closed")
+        CLOSED = 'CL', _('closed')
 
     author: User = models.ForeignKey(User, related_name='tournaments', null=True, blank=False,
                                      on_delete=models.SET_NULL)
@@ -110,7 +111,8 @@ class TournamentParticipant(models.Model):
         PENDING = 'P', _('pending')
         APPROVED = 'A', _('approved')
 
-    user = models.ForeignKey(User, related_name='tournaments_participant', on_delete=models.CASCADE, blank=False, null=False)
+    user = models.ForeignKey(User, related_name='tournaments_participant', on_delete=models.CASCADE, blank=False,
+                             null=False)
     tournament = models.ForeignKey(Tournament, related_name='participants', on_delete=models.CASCADE, null=False,
                                    blank=False)
     status = models.CharField(max_length=1, choices=Status, default=Status.PENDING)
@@ -130,4 +132,3 @@ class TournamentWinner(models.Model):
 
     def __str__(self):
         return f"Winner {self.user.username} on {self.position} position of {self.tournament.title}"
-

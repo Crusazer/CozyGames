@@ -1,16 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}Cozygames: forum{% endblock %}
 {% block body %}
-<style>
-    .list-group-item-action:hover {
-        background-color: #aaf0d1 !important;
-    }
-</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12 mt-5">
             <h1 class="text-center">Forum Code of Conduct</h1>
-            <div class="card mt-4" style="background-color: #ffe1be;">
+            <div class="card mt-4" style="background-color:var(--card-body-bg-color);">
                 <div class="card-body">
                     <ol>
                         <li><strong>Respect Others:</strong> Treat fellow forum members with kindness and respect. Avoid
@@ -70,26 +65,4 @@
         </div>
     </div>
 </div>
-<style>
-    .list-group-item-action:hover {
-        background-color: #aaf0d1 !important;
-    }
-
-    /* Стили для ссылки на создание нового вопроса */
-    .create-question-link {
-        display: block;
-        margin-top: 20px;
-        padding: 10px;
-        background-color: #ffe1be;
-        color: #000;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
-        transition: background-color 0.3s;
-    }
-
-    .create-question-link:hover {
-        background-color: #aaf0d1;
-    }
-</style>
 {% endblock %}

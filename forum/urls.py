@@ -22,5 +22,8 @@ urlpatterns = [
     path('tournament/add/', views.AddParticipantView.as_view(), name='add_participant'),
     path('tournament/remove/', views.RemoveParticipantView.as_view(), name='remove_participant'),
     path('tournament/leave_tournament/', views.LeaveTournamentView.as_view(), name='leave_tournament'),
-    path('tournament/create_tournament/', views.CreateTournamentView.as_view(), name='create_tournament')
+    path('tournament/create_tournament/', views.CreateTournamentView.as_view(), name='create_tournament'),
+    path('tournament/my_tournaments/', views.MyTournamentsView.as_view(), name='my_tournaments'),
+    path('tournament/participating_tournaments/', views.ParticipatingTournamentView.as_view(),
+         name='participating_tournaments')
 ]

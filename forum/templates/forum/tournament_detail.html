@@ -6,7 +6,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-header" style="background-color: #ffe1be;">
+                <div class="card-header" style="background-color: var(--card-body-bg-color);">
                     <h2 class="card-title text-center">{{ tournament.title }}</h2>
                 </div>
                 <div class="card-body">
@@ -31,7 +31,7 @@
                           class="d-flex align-items-center">
                         {% csrf_token %}
                         <input type="hidden" name="tournament_id" value="{{ tournament.pk }}">
-                        <button type="submit" class="btn btn-primary w-100">Join</button>
+                        <button type="submit" class="btn btn-primary w-100 custom-button">Join</button>
                     </form>
                     {% endif %}
                 </div>
@@ -44,7 +44,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-header" style="background-color: #ffe1be;">
+                <div class="card-header" style="background-color: var(--card-body-bg-color);">
                     <h2 class="card-title text-center">List of participants in the tournament</h2>
                 </div>
                 <div class="card-body">
@@ -58,7 +58,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" value="{{ participant.pk }}" name="participant_id">
                                 <input type="hidden" value="{{ tournament.pk }}" name="tournament_id">
-                                <button type="submit" class="btn btn-danger">Remove</button>
+                                <button type="submit" class="btn btn-danger custom-danger-button">Remove</button>
                             </form>
                             {% else %}
                             <div class="text-center w-100">{{ participant.user.username }}</div>
@@ -82,7 +82,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-header" style="background-color: #ffe1be;">
+                <div class="card-header" style="background-color: var(--card-body-bg-color);">
                     <h2 class="card-title text-center">Wish to be joined</h2>
                 </div>
                 <div class="card-body">
@@ -96,7 +96,7 @@
                                 {% csrf_token %}
                                 <input type="hidden" value="{{ participant.pk }}" name="participant_id">
                                 <input type="hidden" value="{{ tournament.id }}" name="tournament_id">
-                                <button type="submit" class="btn btn-success">Add</button>
+                                <button type="submit" class="btn btn-success custom-button">Add</button>
                             </form>
                             {% else %}
                             <div class="text-center w-100">{{ participant.user.username }}</div>

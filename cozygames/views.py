@@ -34,7 +34,10 @@ class BookingView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
         context['form'] = self.form_class()
+        context['tables'] = Table.objects.filter(~Q(reservations__date=today))
+        context['date'] = today
         return context
 
     def get(self, *args, **kwargs):
@@ -57,8 +60,8 @@ class BookingTableView(LoginRequiredMixin, View):
     def post(self, request: HttpRequest, *args, **kwargs):
         try:
             date = datetime.strptime(request.POST.get('date'), '%Y-%m-%d')
-        except TypeError:
-            messages.warning(request, f'Somthing wrong with data')
+        except (TypeError, ValueError):
+            messages.warning(request, f'Somthing wrong with date')
             return redirect(reverse('cozygames:booking'))
         days_delta = (date.date() - timezone.now().date()).days
 
@@ -122,7 +125,12 @@ class VotingView(generic.View):
         if self.request.user.is_authenticated:
             left_votes = 3 - Vote.objects.filter(user=self.request.user, date=timezone.now().date()).count()
 
+        last_voting = Voting.objects.filter(date=timezone.now().date() - timezone.timedelta(days=1)).first()
+        game_of_day = None
+        if last_voting:
+            game_of_day = last_voting.result.name
         context = {
+            'game_of_day': game_of_day,
             'form': VotingForm(),
             'left_votes': left_votes
         }

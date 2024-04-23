@@ -29,15 +29,15 @@
                         <div class="mb-3">
                             {% for field in form.visible_fields %}
                             {{ field }}
-                            <div style="color: #e11e1e">{{ field.errors }}</div>
+                            <div style="color: var(--error-text-color)">{{ field.errors }}</div>
                             {% endfor %}
                         </div>
-                        <button type="submit" class="btn btn-primary w-100" style="background-color: #41B3A3;">Send
+                        <button type="submit" class="btn btn-primary w-100 custom-button">Send
                         </button>
                     </form>
 
                     {% if form.non_field_errors %}
-                    <div style="color: #e11e1e">
+                    <div style="color: var(--error-text-color)">
                         <ul class='form-errors'>
                             {% for error in form.non_field_errors %}
                             <li>{{ error }}</li>

@@ -13,12 +13,12 @@
                 <div class="mb-3">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
-                    <div style="color: #e11e1e">{{ field.errors }}</div>
+                    <div style="color: var(--error-text-color)">{{ field.errors }}</div>
                 </div>
                 {% endfor %}
 
                 {% if form.non_field_errors %}
-                <div style="color: #e11e1e">
+                <div style="color: var(--error-text-color)">
                     <ul class='form-errors'>
                         {% for error in form.non_field_errors %}
                         <li>{{ error }}</li>
@@ -27,7 +27,7 @@
                 </div>
                 {% endif %}
                 <div class="mb-3 d-grid">
-                    <button type="submit" class="btn btn-primary" style="background-color: #41B3A3;">Sign up</button>
+                    <button type="submit" class="btn btn-primary custom-button">Sign up</button>
                 </div>
             </form>
             <a href="{% url 'users:registration' %}?next={{ next }}">Create new account</a>

@@ -13,7 +13,7 @@
                     {{ form.as_p }}
                 </div>
                 <div style="margin-top: 0px; margin-left: 10px;">
-                    <input type="submit" class="btn btn-primary" value="OK"/>
+                    <input type="submit" class="btn btn-primary custom-button" value="OK"/>
                 </div>
             </form>
         </div>
@@ -28,21 +28,20 @@
             <div style="display: flex; flex-wrap: wrap;">
                 {% for table in tables %}
                 <div class="card m-2 bg-warning" style="width: 18rem;">
-                    <div class="card-body" style="background-color: #ffe1be;">
-                        <h5 class="card-title">Table {{ table.number }}</h5>
-                        <p class="card-text">
+                    <div class="card-body" style="background-color: var(--card-body-bg-color);">
+                        <h5 class="card-title text-center">Table {{ table.number }}</h5>
+                        <p class="card-text text-center">
                             Type of table: {{ table.get_type_display }}<br>
                         </p>
-                        <form action="{% url 'cozygames:booking_table' %}" method="POST"
-                              class="d-flex align-items-center">
+                        <form action="{% url 'cozygames:booking_table' %}" method="POST" class="text-center">
                             {% csrf_token %}
                             <input type="hidden" name="table_id" value="{{ table.id }}">
                             <input type="hidden" name="date" value="{{ date|date:'Y-m-d' }}">
-                            <input type="submit" value="Booking table" class="btn btn-primary"
-                                   style="background-color: #41B3A3;">
+                            <input type="submit" value="Booking table" class="btn btn-primary custom-button">
                         </form>
                     </div>
                 </div>
+
                 {% endfor %}
             </div>
             {% else %}

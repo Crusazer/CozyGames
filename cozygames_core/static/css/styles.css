@@ -1,0 +1,61 @@
+:root {
+  --primary-button-color: #aaf0d1;
+  --hover-button-color: #41B3A3;
+  --card-body-bg-color: #ffe1be;
+  --navbar-bg-color: #ffa857;
+  --error-text-color: #e11e1e
+}
+
+.custom-button {
+    background-color: var(--primary-button-color) !important;
+    color: black !important;
+    border-color: var(--primary-button-color) !important;
+}
+
+.custom-button:hover {
+    background-color: var(--hover-button-color) !important;
+    color: black !important;
+    border-color: var(--hover-button-color) !important;
+}
+
+.custom-danger-button {
+    background-color: #ff7a66 !important;
+    color: black !important;
+    border-color: #ff7a66 !important;
+}
+
+.custom-danger-button:hover {
+    background-color: #f21511 !important;
+    color: black !important;
+    border-color: #f21511 !important;
+}
+
+.list-group-item-action:hover {
+    background-color: #aaf0d1 !important;
+}
+
+.create-question-link {
+    display: block;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ffe1be;
+    color: #000;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.create-question-link:hover {
+    background-color: #aaf0d1;
+}
+
+.list-group-item-action:hover {
+    background-color: #aaf0d1 !important;
+}
+
+.page-link {
+    background-color: #ffe1be;
+    border-color: #dee2e6;
+    color: #000;
+}

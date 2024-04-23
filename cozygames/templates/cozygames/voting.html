@@ -3,25 +3,35 @@
 {% block body %}
 <div class="container">
     <div class="row justify-content-center">
+        <div class="text-center">
+            <h1>Game of the Day: {% if game_of_day %}{{ game_of_day }}{% else %}Any{% endif %}</h1>
+        </div>
+
         <div class="col-12">
-            <h1 class="text-center">Voting for the next day's game</h1>
+            <h2 class="text-center">Voting for the next day's game</h2>
             <div class="row-6 d-flex justify-content-center">
                 Each day there is a vote for the game of the day. This game will be played tomorrow at the common table.
                 Anyone can join the common table. Make your choice.
             </div>
+
             <div class="my-3"></div>
             {% if user.is_authenticated %}
-            <div class="row-1 d-flex justify-content-center">
-                You have votes left today: {{ left_votes }}
-            </div>
-            <div class="row-1 d-flex justify-content-center">
-                <form id="votingForm" action="{% url 'cozygames:voting' %}" method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <div class="btn-group w-100" role="group" aria-label="Voting">
-                        <button type="submit" class="btn btn-outline-primary w-50 mr-1">Vote</button>
+            <div class="card mt-4 col-md-4 mx-auto" style="background-color: var(--card-body-bg-color);">
+                <div class="card-body">
+                    <div class="row-1 d-flex justify-content-center">
+                        You have votes left today: {{ left_votes }}
                     </div>
-                </form>
+                    <div class="row-1 d-flex justify-content-center">
+                        <form id="votingForm" action="{% url 'cozygames:voting' %}" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div class="btn-group w-100" role="group" aria-label="Voting">
+                                <button type="submit" class="btn btn-outline-primary w-50 mr-1 custom-button">Vote
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             {% else %}
             <div class="row-1 d-flex justify-content-center">

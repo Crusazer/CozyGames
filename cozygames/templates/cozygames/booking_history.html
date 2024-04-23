@@ -19,7 +19,7 @@
                 {% if reservations %}
                 {% for reservation in reservations %}
                 <div class="card m-2 bg-warning" style="width: 18rem;">
-                    <div class="card-body" style="background-color: #ffe1be;">
+                    <div class="card-body text-center" style="background-color: var(--card-body-bg-color);">
                         <h5 class="card-title">Table {{ reservation.table.number }}</h5>
                         <p class="card-text">
                             Type of table: {{ reservation.table.get_type_display }}<br>

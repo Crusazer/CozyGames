@@ -12,11 +12,11 @@
                 <div class="mb-3">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
-                    <div style="color: #e11e1e">{{ field.errors }}</div>
+                    <div style="color: var(--error-text-color)">{{ field.errors }}</div>
                 </div>
                 {% endfor %}
                 <div class="mb-3 d-grid">
-                    <button type="submit" class="btn btn-primary" style="background-color: #41B3A3;">Sign up</button>
+                    <button type="submit" class="btn btn-primary custom-button">Sign up</button>
                 </div>
             </form>
             <a href="{% url 'users:login' %}?next={{ next }}">Are you already have an account? Sign in</a>
